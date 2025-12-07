@@ -20,7 +20,7 @@
 
     // experience
     $exp_sql = "SELECT * FROM experience ORDER BY start_date DESC";
-    $exp_result = mysqli_query($conn, $exp_sql);
+    $experience_result = mysqli_query($conn, $exp_sql);
 
 
 ?>

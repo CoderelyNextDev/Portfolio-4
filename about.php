@@ -29,7 +29,7 @@
     <a href="#" class="btn-story" id="openModal">✨ Read My Full Story</a>
   </section>
 
-  <!-- Modal Popup -->
+
   <div id="myModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>

@@ -9,7 +9,9 @@
       <div class="project-card" onclick="openModal('modal<?= $project['id'] ?>')">
         <h3><?= htmlspecialchars($project['title']) ?></h3>
         <p><?= htmlspecialchars($project['description']) ?></p>
+        <p style="margin-top:20px">Show More</p>
       </div>
+      
     <?php endwhile; ?>
   </div>
 </section>

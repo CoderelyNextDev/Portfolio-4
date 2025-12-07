@@ -22,14 +22,11 @@ require_once('functions.php');
         <a href="logout.php" onclick="return confirm('Are you sure you want to log out?');" class="btn-delete">Logout</a>
       </nav>
     </header>
-
-    <!-- Display any session messages -->
     <?php if (isset($_SESSION['message'])): ?>
         <div class="message <?php echo $_SESSION['message_type']; ?>">
             <?php echo $_SESSION['message']; ?>
         </div>
         <?php
-        // Clear the session message after displaying
         unset($_SESSION['message']);
         unset($_SESSION['message_type']);
         ?>
