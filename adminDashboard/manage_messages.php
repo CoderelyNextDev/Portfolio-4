@@ -47,7 +47,7 @@
         <!-- Messages List -->
         <div class="table-card">
             <div class="table-header">
-                <h3>📬 All Messages</h3>
+                <h3>All Messages</h3>
             </div>
 
             <?php if ($total_messages > 0): ?>
@@ -110,14 +110,6 @@
                                         <span class="action-text">Read</span>
                                     </span>
                                 <?php endif; ?>
-                                
-                                <a href="mailto:<?php echo htmlspecialchars($message['email']); ?>" 
-                                   class="btn-action btn-reply" 
-                                   title="Reply via Email">
-                                    <span class="action-icon">↩️</span>
-                                    <span class="action-text">Reply</span>
-                                </a>
-                                
                                 <a href="manage_messages.php?delete=<?php echo $message['id']; ?>" 
                                    class="btn-action btn-delete-msg" 
                                    title="Delete Message"

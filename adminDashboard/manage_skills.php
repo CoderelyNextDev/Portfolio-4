@@ -1,12 +1,11 @@
 <?php include('includes/head.php'); ?>
 <body>
     <?php include('includes/sidebar.php')?>
-    <!-- Main Content -->
     <main class="main-content">
         <!-- Header -->
         <div class="header">
             <div class="header-left">
-                <h2>💻 Manage Skills</h2>
+                <h2> Manage Skills</h2>
                 <p>Add, edit, or remove your technical skills</p>
             </div>
             <div class="header-right">
@@ -36,10 +35,10 @@
         <!-- Add/Edit Form -->
         <div class="form-card">
             <div class="form-header">
-                <h3><?php echo $edit_skill ? '✏️ Edit Skill' : '➕ Add New Skill'; ?></h3>
+                <h3><?php echo $edit_skill ? 'Edit Skill' : 'Add New Skill'; ?></h3>
             </div>
             
-            <form method="POST" action="manage_skills.php">
+            <form method="POST" action="<?php echo $_SERVER['PHP_SELF']?>">
                 <?php if ($edit_skill): ?>
                     <input type="hidden" name="id" value="<?php echo $edit_skill['id']; ?>">
                 <?php endif; ?>
@@ -100,8 +99,8 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">
-                        <?php echo $edit_skill ? '💾 Update Skill' : '➕ Add Skill'; ?>
+                    <button type="submit" class="btn btn-seconadary">
+                        <?php echo $edit_skill ? ' Update Skill' : ' Add Skill'; ?>
                     </button>
                     <?php if ($edit_skill): ?>
                         <a href="manage_skills.php" class="btn btn-secondary">Cancel</a>
@@ -113,7 +112,7 @@
         <!-- Skills List -->
         <div class="table-card">
             <div class="table-header">
-                <h3>📋 All Skills</h3>
+                <h3> All Skills</h3>
             </div>
 
             <?php if ($skills_count > 0): ?>

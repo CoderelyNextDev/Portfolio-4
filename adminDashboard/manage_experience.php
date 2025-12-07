@@ -35,7 +35,7 @@
         <!-- Add/Edit Form -->
         <div class="form-card">
             <div class="form-header">
-                <h3><?php echo $edit_experience ? '✏️ Edit Experience' : '➕ Add New Experience'; ?></h3>
+                <h3><?php echo $edit_experience ? 'Edit Experience' : ' Add New Experience'; ?></h3>
             </div>
             
             <form method="POST" action="manage_experience.php">
@@ -120,7 +120,7 @@
         <!-- Experience Timeline -->
         <div class="table-card">
             <div class="table-header">
-                <h3>📋 Work Experience Timeline</h3>
+                <h3> Work Experience Timeline</h3>
             </div>
 
             <?php if ($experience_count > 0): ?>
@@ -133,7 +133,7 @@
                                     <div class="timeline-title">
                                         <h4><?php echo htmlspecialchars($exp['role']); ?></h4>
                                         <span class="company-badge">
-                                            🏢 <?php echo htmlspecialchars($exp['company']); ?>
+                                             <?php echo htmlspecialchars($exp['company']); ?>
                                         </span>
                                     </div>
                                     <div class="timeline-date">

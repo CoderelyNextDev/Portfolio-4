@@ -43,7 +43,7 @@
         } else {
             $sql = "INSERT INTO skills (title, description, icon, proficiency) VALUES ('$title', '$description', '$icon', $proficiency)";
             $message = "Skill added successfully!";
-            header("Location: adminDashboard/manage_skills.php");
+            header("Location: manage_skills.php");
         }
         
         if (mysqli_query($conn, $sql)) {
@@ -87,11 +87,13 @@
             $end_date_sql = $end_date ? "'$end_date'" : "NULL";
             $sql = "UPDATE experience SET role='$role', company='$company', start_date='$start_date', end_date=$end_date_sql, description='$description' WHERE id=$id";
             $message = "Experience updated successfully!";
+            
         } else {
             // Insert
             $end_date_sql = $end_date ? "'$end_date'" : "NULL";
             $sql = "INSERT INTO experience (role, company, start_date, end_date, description) VALUES ('$role', '$company', '$start_date', $end_date_sql, '$description')";
             $message = "Experience added successfully!";
+             header("Location: manage_experience.php");
         }
         
         if (mysqli_query($conn, $sql)) {
@@ -124,31 +126,102 @@
         }
     }
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['link_url'])) {
-        $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-        $title = mysqli_real_escape_string($conn, $_POST['title']);
-        $description = mysqli_real_escape_string($conn, $_POST['description']);
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['link_url'])) {
+    $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+    $title = mysqli_real_escape_string($conn, $_POST['title']);
+    $description = mysqli_real_escape_string($conn, $_POST['description']);
+    $link_url = mysqli_real_escape_string($conn, $_POST['link_url']);
+    $category = mysqli_real_escape_string($conn, $_POST['category']);
+    $date_completed = !empty($_POST['date_completed']) ? mysqli_real_escape_string($conn, $_POST['date_completed']) : NULL;
+    
+    // Get existing image path if updating
+    $existing_image = '';
+    if ($id > 0) {
+        $result = mysqli_query($conn, "SELECT image_path FROM projects WHERE id=$id");
+        $row = mysqli_fetch_assoc($result);
+        $existing_image = $row['image_path'] ?? '';
+    }
+    $image_path = $existing_image;
+    
+    // Handle image upload
+    if (isset($_FILES['project_image']) && $_FILES['project_image']['error'] == 0) {
+        $allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+        $file_type = $_FILES['project_image']['type'];
+        $file_size = $_FILES['project_image']['size'];
+        $max_size = 5 * 1024 * 1024; // 5MB
+        
+        if (in_array($file_type, $allowed_types)) {
+            if ($file_size <= $max_size) {
+                // Create upload directory if it doesn't exist
+                $upload_dir = 'assets/img/projects/';
+                if (!file_exists($upload_dir)) {
+                    mkdir($upload_dir, 0755, true);
+                }
+                
+                // Generate unique filename
+                $file_extension = pathinfo($_FILES['project_image']['name'], PATHINFO_EXTENSION);
+                $safe_title = preg_replace('/[^a-z0-9]+/', '-', strtolower($title));
+                $safe_title = trim($safe_title, '-');
+                $new_filename = 'project_' . $safe_title . '_' . time() . '.' . $file_extension;
+                $upload_path = $upload_dir . $new_filename;
+                
+                // Upload file
+                if (move_uploaded_file($_FILES['project_image']['tmp_name'], $upload_path)) {
+                    // Delete old image if exists and is in assets/img/projects/
+                    if ($existing_image && file_exists($existing_image) && strpos($existing_image, 'assets/img/projects/') === 0) {
+                        unlink($existing_image);
+                    }
+                    
+                    $image_path = $upload_path;
+                } else {
+                    $error_message = "Error uploading file. Please check folder permissions.";
+                }
+            } else {
+                $error_message = "File size exceeds 5MB limit.";
+            }
+        } else {
+            $error_message = "Invalid file type. Only JPG, PNG, GIF, and WebP are allowed.";
+        }
+    }
+    // If using URL/path input instead
+    elseif (!empty($_POST['image_path'])) {
         $image_path = mysqli_real_escape_string($conn, $_POST['image_path']);
-        $link_url = mysqli_real_escape_string($conn, $_POST['link_url']);
-        $category = mysqli_real_escape_string($conn, $_POST['category']);
-        $date_completed = !empty($_POST['date_completed']) ? mysqli_real_escape_string($conn, $_POST['date_completed']) : NULL;
+    }
+    
+    // Update or insert into database
+    if (!isset($error_message) || empty($error_message)) {
+        $date_sql = $date_completed ? "'$date_completed'" : "NULL";
         
         if ($id > 0) {
-            $date_sql = $date_completed ? "'$date_completed'" : "NULL";
-            $sql = "UPDATE projects SET title='$title', description='$description', image_path='$image_path', link_url='$link_url', category='$category', date_completed=$date_sql WHERE id=$id";
+            // Update existing project
+            $sql = "UPDATE projects SET 
+                    title='$title', 
+                    description='$description', 
+                    image_path='$image_path', 
+                    link_url='$link_url', 
+                    category='$category', 
+                    date_completed=$date_sql 
+                    WHERE id=$id";
             $message = "Project updated successfully!";
         } else {
-            $date_sql = $date_completed ? "'$date_completed'" : "NULL";
-            $sql = "INSERT INTO projects (title, description, image_path, link_url, category, date_completed) VALUES ('$title', '$description', '$image_path', '$link_url', '$category', $date_sql)";
+            // Insert new project
+            $sql = "INSERT INTO projects (title, description, image_path, link_url, category, date_completed) 
+                    VALUES ('$title', '$description', '$image_path', '$link_url', '$category', $date_sql)";
             $message = "Project added successfully!";
         }
         
         if (mysqli_query($conn, $sql)) {
             $success_message = $message;
+            // Redirect to clear form after adding new project
+            if ($id == 0) {
+                header("Location: manage_projects.php?success=1");
+                exit();
+            }
         } else {
             $error_message = "Error: " . mysqli_error($conn);
         }
     }
+}
 
     $projects_query = mysqli_query($conn, "SELECT * FROM projects ORDER BY date_completed DESC, id DESC");
     $projects_count = mysqli_num_rows($projects_query);
@@ -196,30 +269,82 @@
     $messages_query = mysqli_query($conn, "SELECT * FROM contact_messages ORDER BY sent_at DESC");
 
     // personal info
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tagline'])) {
+   if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tagline'])) {
     $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
     $tagline = mysqli_real_escape_string($conn, $_POST['tagline']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $phone_number = mysqli_real_escape_string($conn, $_POST['phone_number']);
     $about_summary = mysqli_real_escape_string($conn, $_POST['about_summary']);
-    $profile_picture_url = mysqli_real_escape_string($conn, $_POST['profile_picture_url']);
     
-
-    $sql = "UPDATE personal_info SET 
-            full_name='$full_name', 
-            tagline='$tagline', 
-            email='$email', 
-            phone_number='$phone_number', 
-            about_summary='$about_summary', 
-            profile_picture_url='$profile_picture_url' 
-            WHERE id=1";
-    
+   
+    $profile_picture_url = $personal_info['profile_picture_url'] ?? '';
+ 
+    if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] == 0) {
+        $allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+        $file_type = $_FILES['profile_picture']['type'];
+        $file_size = $_FILES['profile_picture']['size'];
+        $max_size = 5 * 1024 * 1024; // 5MB
+        
+        if (in_array($file_type, $allowed_types)) {
+            if ($file_size <= $max_size) {
+               
+                $upload_dir = 'assets/img/';
+                if (!file_exists($upload_dir)) {
+                    mkdir($upload_dir, 0755, true);
+                }
+             
+                $file_extension = pathinfo($_FILES['profile_picture']['name'], PATHINFO_EXTENSION);
+                $new_filename = 'profile_' . time() . '_' . uniqid() . '.' . $file_extension;
+                $upload_path = $upload_dir . $new_filename;
+                
+                // Upload file
+                if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $upload_path)) {
+                    
+                    if ($profile_picture_url && file_exists($profile_picture_url) && strpos($profile_picture_url, 'assets/img/') === 0) {
+                        unlink($profile_picture_url);
+                    }
+                    
+              
+                    $profile_picture_url = $upload_path;
+                    $success_message = "Profile picture uploaded successfully!";
+                } else {
+                    $error_message = "Error uploading file. Please check folder permissions.";
+                }
+            } else {
+                $error_message = "File size exceeds 5MB limit.";
+            }
+        } else {
+            $error_message = "Invalid file type. Only JPG, PNG, GIF, and WebP are allowed.";
+        }
+    }
+  
+    elseif (!empty($_POST['profile_picture_url']) && $_POST['profile_picture_url'] !== $profile_picture_url) {
+        $profile_picture_url = mysqli_real_escape_string($conn, $_POST['profile_picture_url']);
+    }
+ 
+    // Update database
+    if (!isset($error_message) || empty($error_message)) {
+        $sql = "UPDATE personal_info SET 
+                full_name='$full_name', 
+                tagline='$tagline', 
+                email='$email', 
+                phone_number='$phone_number', 
+                about_summary='$about_summary', 
+                profile_picture_url='$profile_picture_url' 
+                WHERE id=1";
+        
         if (mysqli_query($conn, $sql)) {
-            $success_message = "Personal information updated successfully!";
+            if (!isset($success_message)) {
+                $success_message = "Personal information updated successfully!";
+            }
+            // Refresh data
+            $info_result = mysqli_query($conn, "SELECT * FROM personal_info WHERE id=1");
+            $personal_info = mysqli_fetch_assoc($info_result);
         } else {
             $error_message = "Error updating information: " . mysqli_error($conn);
         }
     }
+}
 
     // Fetch personal info (always fetch the first record)
     $info_result = mysqli_query($conn, "SELECT * FROM personal_info WHERE id=1");
@@ -232,3 +357,4 @@
         $info_result = mysqli_query($conn, "SELECT * FROM personal_info WHERE id=1");
         $personal_info = mysqli_fetch_assoc($info_result);
     }
+    ?>

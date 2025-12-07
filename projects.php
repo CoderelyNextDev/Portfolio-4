@@ -23,9 +23,8 @@ mysqli_data_seek($projects_result, 0);
       <span class="close" onclick="closeModal('modal<?= $project['id'] ?>')">&times;</span>
       <h3><?= htmlspecialchars($project['title']) ?></h3>
 
-      <img src="uploads/<?= htmlspecialchars($project['image']) ?>" 
-           alt="<?= htmlspecialchars($project['title']) ?>">
-
+      <img src="adminDashboard/<?= htmlspecialchars($project['image_path']) ?>" 
+           alt="<?= htmlspecialchars($project['title']) ?>" style="width:400px">
       <p><?= htmlspecialchars($project['description']) ?></p>
     </div>
   </div>
