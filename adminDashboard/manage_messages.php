@@ -38,7 +38,7 @@
         <!-- Actions Bar -->
         <?php if ($unread_messages > 0): ?>
             <div class="actions-bar">
-                <a href="manage_messages.php?read_all=1" class="btn btn-primary" onclick="return confirm('Mark all messages as read?')">
+                <a href="manage_messages.php?read_all=1" class="btn" style="background:#fff;color:#000" onclick="return confirm('Mark all messages as read?')">
                     ✓ Mark All as Read
                 </a>
             </div>
@@ -60,7 +60,7 @@
                                         <?php echo strtoupper(substr($message['name'], 0, 1)); ?>
                                     </div>
                                     <div class="sender-info">
-                                        <h4><?php echo htmlspecialchars($message['name']); ?></h4>
+                                        <h4 style="color:#fff"><?php echo htmlspecialchars($message['name']); ?></h4>
                                         <a href="mailto:<?php echo htmlspecialchars($message['email']); ?>" class="sender-email">
                                             📧 <?php echo htmlspecialchars($message['email']); ?>
                                         </a>
@@ -99,10 +99,10 @@
                             <div class="message-actions">
                                 <?php if (!$message['is_read']): ?>
                                     <a href="manage_messages.php?read=<?php echo $message['id']; ?>" 
-                                       class="btn-action btn-read" 
+                                       class="btn" 
                                        title="Mark as Read">
                                         <span class="action-icon">✓</span>
-                                        <span class="action-text">Mark as Read</span>
+                                        <span >Mark as Read</span>
                                     </a>
                                 <?php else: ?>
                                     <span class="btn-action disabled">
@@ -124,7 +124,7 @@
             <?php else: ?>
                 <div class="empty-state">
                     <div class="empty-state-icon">📭</div>
-                    <h3>No Messages Yet</h3>
+                    <h3 style="color:#fff">No Messages Yet</h3>
                     <p>When visitors contact you through your portfolio, their messages will appear here</p>
                 </div>
             <?php endif; ?>

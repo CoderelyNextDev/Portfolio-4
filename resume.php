@@ -33,7 +33,7 @@
       <h3>💼 Experience</h3>
       <div class="timeline">
 
-        <?php while ($row = mysqli_fetch_assoc($exp_result)) { ?>
+        <?php while ($row = mysqli_fetch_assoc($experience_result)) { ?>
           <div class="timeline-item">
             <p>
               <strong><?php echo $row['role']; ?></strong>, 
@@ -48,7 +48,6 @@
       </div>
     </div>
 
-    <!-- ================= SKILLS (STATIC) ================= -->
     <div class="resume-card">
       <h3>🛠️ Skills</h3>
       <ul>

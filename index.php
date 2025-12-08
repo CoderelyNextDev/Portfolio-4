@@ -5,7 +5,7 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <img src="<?php echo $profile_picture; ?>" 
+            <img src="adminDashboard/<?php echo $profile_picture; ?>" 
                  alt="<?php echo $full_name; ?>" 
                  class="profile-pic">
             <h2>Hi there, I'm <span><?php echo $full_name; ?></span></h2>

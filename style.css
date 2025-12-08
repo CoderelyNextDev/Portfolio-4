@@ -58,6 +58,34 @@ header {
   border-radius: 8px;
 }
 
+/* Mobile nav toggle (hamburger) */
+.nav-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+.hamburger {
+  display: block;
+  width: 24px;
+  height: 2px;
+  margin-top: -27px;
+  background: #fff;
+  position: relative;
+}
+.hamburger::before,
+.hamburger::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 24px;
+  height: 2px;
+  background: #fff;
+}
+.hamburger::before { top: -7px; }
+.hamburger::after { top: 7px; }
+
 /* Hero Section */
 .hero {
   min-height: 90vh;
@@ -72,9 +100,6 @@ header {
 .hero-content {
   max-width: 800px;
 }
-
-
-
 .hero-content p {
   font-size: 1.2rem;
   margin-bottom: 30px;
@@ -139,6 +164,23 @@ footer {
   }
   .nav-links {
     justify-content: center;
+    /* hide horizontal links on small screens and show when toggled */
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  /* show toggle button on smaller screens */
+  .nav-toggle {
+    display: block;
+    align-self: flex-end;
+    margin-top: -10px;
+  }
+
+  /* when nav is open */
+  .nav-links.open {
+    display: flex;
   }
   .hero-content h2 {
     font-size: 1.8rem;

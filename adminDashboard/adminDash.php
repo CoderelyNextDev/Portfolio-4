@@ -20,7 +20,7 @@
                 </div>
             </div>
 
-            <div class="stat-card success">
+            <div class="stat-card">
                 <div class="stat-header">
                     <div>
                         <div class="stat-value"><?php echo $exp_count; ?></div>
@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            <div class="stat-card warning">
+            <div class="stat-card">
                 <div class="stat-header">
                     <div>
                         <div class="stat-value"><?php echo $projects_count; ?></div>
@@ -46,7 +46,7 @@
                 </div>
             </div>
 
-            <div class="stat-card info">
+            <div class="stat-card">
                 <div class="stat-header">
                     <div>
                         <div class="stat-value"><?php echo $messages_count; ?></div>

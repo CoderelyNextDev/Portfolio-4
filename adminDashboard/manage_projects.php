@@ -145,8 +145,8 @@
             </div>
 
             <div class="form-actions">
-                <button type="submit" class="btn btn-primary">
-                    <?php echo $edit_project ? '💾 Update Project' : '➕ Add Project'; ?>
+                <button type="submit" class="btn ">
+                    <?php echo $edit_project ? ' Update Project' : 'Add Project'; ?>
                 </button>
                 <?php if ($edit_project): ?>
                     <a href="manage_projects.php" class="btn btn-secondary">Cancel</a>

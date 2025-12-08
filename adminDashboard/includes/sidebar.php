@@ -8,7 +8,7 @@
     left: 20px;
     width: 45px;
     height: 45px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--danger) 0%, var(--primary) 100%);
     border: none;
     border-radius: 12px;
     cursor: pointer;
@@ -19,13 +19,11 @@
     justify-content: center;
     gap: 5px;
     padding: 0;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
     transition: all 0.3s ease;
 }
 
 .sidebar-toggle:hover {
     transform: scale(1.05);
-    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
 }
 
 .sidebar-toggle:active {

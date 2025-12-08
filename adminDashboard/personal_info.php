@@ -179,7 +179,7 @@
             </div>
 
             <div class="form-actions">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn ">
                     Save Changes
                 </button>
                 <button type="reset" class="btn btn-secondary" onclick="clearPreview()">

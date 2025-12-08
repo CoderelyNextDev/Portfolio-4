@@ -107,8 +107,8 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">
-                        <?php echo $edit_experience ? '💾 Update Experience' : '➕ Add Experience'; ?>
+                    <button type="submit" class="btn">
+                        <?php echo $edit_experience ? 'Update Experience' : 'Add Experience'; ?>
                     </button>
                     <?php if ($edit_experience): ?>
                         <a href="manage_experience.php" class="btn btn-secondary">Cancel</a>
